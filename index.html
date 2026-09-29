@@ -113,12 +113,6 @@
   }
   .iconbtn:hover{ color: var(--cream); border-color: rgba(245,239,227,0.3); }
   .iconbtn:disabled{ opacity:0.4; cursor:default; }
-.research-note{width:min(92vw,330px);min-height:18px;margin:5px auto 2px;text-align:center;
-    font-size:10px;line-height:1.45;color:var(--dim);opacity:0;transform:translateY(-4px);
-    transition:opacity .25s ease,transform .25s ease;z-index:1;}
-  .research-note.show{opacity:1;transform:none;display:block;}
-  .research-note:not(.show){display:none;}
-  .research-note strong{color:var(--cream);font-size:9px;letter-spacing:.12em;text-transform:uppercase;}
 
   #clueCard{
     max-width: 320px; text-align:center; font-size:13px; color: var(--night);
@@ -214,7 +208,6 @@
     font-size: clamp(19px, 5.5vw, 24px); line-height:1.4; color: var(--cream); margin:0;
   }
   .banner .headline .hi{ color: var(--marigold); font-style:normal; }
-  .methodology-box{margin-top:14px;padding:12px 13px;border:1px dashed rgba(99,214,154,.28);border-radius:12px;background:rgba(73,185,111,.06);text-align:left;}
   .methodology-grid{display:grid;grid-template-columns:1fr auto;gap:6px 12px;margin-top:8px;font-size:11px;color:var(--dim);}
   .methodology-grid strong{color:var(--cream);font-weight:700;text-align:right;}
   .methodology-foot{margin-top:10px;font-size:9px;line-height:1.45;color:rgba(168,199,180,.8);}
@@ -501,7 +494,6 @@
   body.cinematic .sub,
   body.cinematic .progress,
   body.cinematic .experiment-status,
-  body.cinematic .research-note,
   body.cinematic .personal-footer {
     opacity: 0;
     transform: translateY(8px);
@@ -802,27 +794,20 @@
     font-size: 13px; line-height: 1.65; color: var(--dim);
   }
   .proposal-question {
-    margin-top: 15px; color: var(--marigold);
-    font-size: 14px; font-weight: 700;
+    display:block; width:100%; margin-top:15px; padding:12px 14px;
+    border:1px solid rgba(99,214,154,.32); border-radius:10px;
+    background:rgba(7,20,15,.04); color:var(--marigold);
+    font-size:14px; font-weight:700; font-family:inherit;
+    cursor:pointer; transition:transform .12s ease, background .2s ease, border-color .2s ease;
   }
+  .proposal-question:hover{ background:rgba(99,214,154,.08); border-color:rgba(99,214,154,.55); }
+  .proposal-question:active{ transform:scale(.98); }
   @media (max-width: 480px) {
     .research-proposal { padding: 16px 14px 18px; margin-top: 16px; }
     .proposal-copy { font-size: 12.5px; }
   }
 
   /* ===== FINAL PHONE-FIRST PASS ===== */
-  body::before{
-    content:"☘";
-    position:fixed;
-    right:-22px;
-    top:10%;
-    font-size:130px;
-    line-height:1;
-    color:rgba(73,185,111,.055);
-    transform:rotate(18deg);
-    pointer-events:none;
-    z-index:0;
-  }
   body::after{
     content:"✦";
     position:fixed;
@@ -963,15 +948,13 @@
       <span class="title-line"><span class="soft">THE ANAKHA</span></span>
       <span class="title-line"><span class="accent">STUDY</span><span class="heart">♥</span></span>
     </h1>
-    <div class="title-kicker">peer review was definitely not consulted</div>
     <p class="sub" id="subText">You study phytochemicals. I decided to conduct some research of my own.</p>
   </header>
 
   <div class="toolbar">
-    <button class="iconbtn" id="hintBtn" onclick="useHint()">Request Peer Review</button>
+    <button class="iconbtn" id="hintBtn" onclick="useHint()">Hint (1 left)</button>
   </div>
 
-  <div class="research-note" id="researchNote" aria-live="polite"></div>
   <div id="clueCard"><span class="clue-label">Clue</span><span id="clueText"></span></div>
   <div id="msg" role="status" aria-live="polite"></div>
   <div id="colorGuide" aria-label="Color coding rules">
@@ -1008,7 +991,7 @@
           <div class="date-plan-item"><div class="date-plan-icon">🧪</div><div><strong>Research mode: activated</strong><br>phytochemicals have entered the chat</div></div>
           <div class="date-plan-item"><div class="date-plan-icon">💥</div><div><strong>Canon events: several</strong><br>the year has clearly been doing too much</div></div>
           <div class="date-plan-item"><div class="date-plan-icon">🤯</div><div><strong>Goes crazy about everything</strong><br>scientifically difficult to measure</div></div>
-          <div class="date-plan-item"><div class="date-plan-icon">🎯</div><div><strong>Difficulty level: unnecessarily high</strong><br>researcher remains weirdly committed to the challenge</div></div>
+          <div class="date-plan-item"><div class="date-plan-icon">🎯</div><div><strong>Difficulty level: unnecessarily high</strong><br>somehow, I remain committed to the challenge</div></div>
           <div class="date-plan-item"><div class="date-plan-icon">😊</div><div><strong>Smile: suspiciously effective</strong><br>potentially responsible for multiple findings</div></div>
           <div class="date-plan-item"><div class="date-plan-icon">🧬</div><div><strong>Primary objective: survive the year</strong><br>preferably with fewer plot twists</div></div>
         </div>
@@ -1028,28 +1011,17 @@
           <span class="hi">The findings are inconclusive.</span><br>Mostly because you're somehow equal parts science, chaos and an unfairly good smile.
         </p>
         <p class="note">
-          Subject appears to be pursuing serious phytochemical research while simultaneously going completely crazy about approximately everything.<br><br>
-          Multiple canon events have been recorded. Subject has expressed a strong desire for the year to end. Researcher recommends fewer plot twists, more laughing, and absolutely no additional character development before December.<br><br>
-          <strong>Final observation:</strong> subject is exceptionally difficult to impress. Fortunately, researcher appears to enjoy a challenge.
+          You are somehow balancing serious phytochemical research with going completely crazy about approximately everything.<br><br>
+          There have been several canon events, and you've made it very clear that you would like the year to end. Fewer plot twists, more laughing, please.<br><br>
+          <strong>Final observation:</strong> you are exceptionally difficult to impress. Fortunately, I happen to enjoy a challenge.
         </p>
         <div class="research-proposal">
           <div class="proposal-label">PROPOSED NEXT EXPERIMENT</div>
           <div class="proposal-title">One field study.<br>Outside the lab.</div>
           <div class="proposal-copy">You, me, something good to eat, and enough time to determine whether the chemistry is actually as interesting in person.</div>
-          <div class="proposal-question">Would you be willing to participate? ♡</div>
+          <button class="proposal-question" type="button" onclick="toast('Research participation approved. Further fieldwork required. ♡')">Would you be willing to participate? ♡</button>
         </div>
-        <div class="methodology-box">
-          <div class="proposal-label">METHODOLOGY</div>
-          <div class="methodology-grid">
-            <span>Sample size</span><strong>1</strong>
-            <span>Control group</span><strong>Non-existent</strong>
-            <span>Objectivity</span><strong>0%</strong>
-            <span>Peer review</span><strong>Declined</strong>
-          </div>
-          <div class="methodology-foot">Disclaimer: this study has not been peer reviewed and should not be mistaken for serious science. The researcher accepts no responsibility for smiling at inappropriate moments.</div>
-        </div>
-
-        <p class="sign">Research conducted with questionable methodology,<br>but very good intentions. ♡</p>
+        <p class="sign">An unnecessarily elaborate study,<br>but very good intentions. ♡</p>
       </div>
     </div>
   </div>
@@ -1117,7 +1089,7 @@
       "Interesting hypothesis. Wrong conclusion.",
       "The lab notes say: absolutely not.",
       "Strong confidence. Weak experimental result.",
-      "This is why peer review exists. 😂",
+      "The confidence was excellent. The evidence, less so. 😂",
       "Nope. But the chaos is promising."
     ],
     1: [
@@ -1136,26 +1108,6 @@
     ]
   };
 
-  const researchNotes = [
-    "Subject appears confident. Evidence supporting this confidence: questionable.",
-    "Researcher notes a statistically significant increase in chaos.",
-    "Experimental conditions remain deeply unserious.",
-    "Peer review has been requested. Peer review has declined.",
-    "The researcher is beginning to suspect personal bias.",
-    "Scientific objectivity is leaving the building."
-  ];
-
-  function showResearchNote(){
-    const el = document.getElementById('researchNote');
-    if(!el) return;
-    const note = researchNotes[Math.min(wrongCount, researchNotes.length - 1)];
-    el.innerHTML = "<strong>Researcher's note #" + String(wrongCount).padStart(2,'0') + "</strong> · " + note;
-    el.classList.remove('show');
-    void el.offsetWidth;
-    el.classList.add('show');
-    setTimeout(() => el.classList.remove('show'), 3600);
-  }
-
   function playfulMessage(){
     const arr = playfulWrong[stageIndex] || playfulWrong[0];
     const text = arr[Math.min(wrongCount, arr.length - 1)];
@@ -1164,8 +1116,6 @@
     msgEl.classList.remove('msg-pop');
     void msgEl.offsetWidth;
     msgEl.classList.add('msg-pop');
-    showResearchNote();
-    updateExperimentStatus();
   }
 
   function toast(text){
@@ -1273,22 +1223,6 @@
   }
   function answer(){ return STAGES[stageIndex].word; }
 
-  const STAGE_NAMES = ["Phytochemical profile", "Canon event analysis", "Smile variable"];
-
-  function updateExperimentStatus(){
-    const total = STAGES.length;
-    const progress = ((stageIndex + 1) / total) * 100;
-    const fill = document.getElementById('statusFill');
-    const stage = document.getElementById('statusStage');
-    const value = document.getElementById('objectivityValue');
-    const obj = document.getElementById('objectivityFill');
-    if(fill) fill.style.width = progress + '%';
-    if(stage) stage.textContent = String(stageIndex + 1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0') + ' · ' + STAGE_NAMES[stageIndex];
-    const objectivity = Math.max(0, 100 - wrongCount * 15);
-    if(obj){ obj.style.width = objectivity + '%'; obj.style.background = objectivity > 55 ? 'var(--marigold)' : objectivity > 25 ? 'var(--leaf)' : 'var(--magenta)'; }
-    if(value) value.textContent = objectivity + '%';
-  }
-
   function buildProgressDots(){
     const el = document.getElementById('progressDots');
     if(!el) return;
@@ -1298,7 +1232,6 @@
       d.className = 'dot' + (i < stageIndex ? ' done' : i === stageIndex ? ' active' : '');
       el.appendChild(d);
     });
-    updateExperimentStatus();
   }
 
   function buildBoard(){
@@ -1485,15 +1418,12 @@
     extraRowCount = 0;
     Object.keys(keyStates).forEach(k => delete keyStates[k]);
     document.getElementById('transition').classList.remove('show');
-    hintBtn.textContent = "Request Peer Review";
+    hintBtn.textContent = "Hint (1 left)";
     hintBtn.disabled = false;
     buildBoard();
     buildKeyboard();
     buildProgressDots();
     msgEl.textContent = "";
-    const note = document.getElementById('researchNote');
-    if(note) note.classList.remove('show');
-    updateExperimentStatus();
   }
 
   function launchWin(){
