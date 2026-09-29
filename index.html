@@ -3,17 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>For Tanya</title>
+<title>The Anakha Study</title>
 <style>
   :root{
-    --night: #140D16;
-    --night-2: #241522;
-    --night-3: #241d3f;
-    --marigold: #FFB6A3;
-    --magenta: #FF5C8A;
-    --cream: #FFF4F0;
-    --dim: #C7AAB8;
-    --absent: #392532;
+    --night: #07140F;
+    --night-2: #0E2119;
+    --night-3: #173326;
+    --marigold: #A8E6A1;
+    --magenta: #63D69A;
+    --cream: #F1FFF5;
+    --dim: #A8C7B4;
+    --absent: #203B2D;
+    --leaf: #49B96F;
+    --leaf-soft: rgba(73,185,111,.14);
   }
   *{ box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html,body{
@@ -110,6 +112,12 @@
   }
   .iconbtn:hover{ color: var(--cream); border-color: rgba(245,239,227,0.3); }
   .iconbtn:disabled{ opacity:0.4; cursor:default; }
+.research-note{width:min(92vw,330px);min-height:18px;margin:5px auto 2px;text-align:center;
+    font-size:10px;line-height:1.45;color:var(--dim);opacity:0;transform:translateY(-4px);
+    transition:opacity .25s ease,transform .25s ease;z-index:1;}
+  .research-note.show{opacity:1;transform:none;display:block;}
+  .research-note:not(.show){display:none;}
+  .research-note strong{color:var(--cream);font-size:9px;letter-spacing:.12em;text-transform:uppercase;}
 
   #clueCard{
     max-width: 320px; text-align:center; font-size:13px; color: var(--night);
@@ -117,7 +125,8 @@
     margin: 4px 0 2px; z-index:1; opacity:0; transform: translateY(-6px);
     transition: opacity .3s ease, transform .3s ease; pointer-events:none;
   }
-  #clueCard.show{ opacity:1; transform: translateY(0); }
+  #clueCard.show{ opacity:1; transform: translateY(0); display:block; }
+  #clueCard:not(.show){ display:none; }
   #clueCard .clue-label{ font-size:10px; letter-spacing:.14em; text-transform:uppercase; opacity:0.7; display:block; margin-bottom:2px; }
 
   #board{ display:grid; gap: 8px; margin: 18px 0 20px; z-index:1; }
@@ -145,6 +154,27 @@
   }
 
   #msg{ min-height: 20px; font-size:14px; color: var(--marigold); margin-bottom: 4px; z-index:1; text-align:center; }
+
+  #colorGuide{
+    width:min(92vw,330px); margin:0 auto 12px; padding:12px 12px 11px;
+    border:1px solid rgba(99,214,154,.22); border-radius:14px;
+    background:linear-gradient(145deg,rgba(73,185,111,.08),rgba(255,255,255,.025));
+    z-index:1; box-shadow:0 8px 24px rgba(0,0,0,.12);
+  }
+  .guide-title{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;text-align:center;}
+  .guide-row{display:flex;align-items:center;gap:9px;font-size:11px;color:var(--dim);margin:7px 0;}
+  .guide-swatch{
+    width:28px;height:28px;flex:0 0 28px;border-radius:6px;border:2px solid transparent;
+    display:grid;place-items:center;font-size:12px;font-weight:800;color:var(--cream);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
+  }
+  .guide-swatch.correct{background:var(--magenta);border-color:var(--magenta);}
+  .guide-swatch.present{background:var(--marigold);border-color:var(--marigold);color:var(--night);}
+  .guide-swatch.absent{background:var(--absent);border-color:var(--absent);color:var(--dim);}
+  .guide-copy{line-height:1.3;}
+  .guide-row strong{display:block;color:var(--cream);font-weight:750;font-size:11px;}
+  .guide-copy span{display:block;margin-top:1px;}
+
 
   #keyboard{ display:flex; flex-direction:column; gap:8px; z-index:1; margin-top:6px; }
   .krow{ display:flex; gap:6px; justify-content:center; }
@@ -183,6 +213,11 @@
     font-size: clamp(19px, 5.5vw, 24px); line-height:1.4; color: var(--cream); margin:0;
   }
   .banner .headline .hi{ color: var(--marigold); font-style:normal; }
+  .methodology-box{margin-top:14px;padding:12px 13px;border:1px dashed rgba(99,214,154,.28);border-radius:12px;background:rgba(73,185,111,.06);text-align:left;}
+  .methodology-grid{display:grid;grid-template-columns:1fr auto;gap:6px 12px;margin-top:8px;font-size:11px;color:var(--dim);}
+  .methodology-grid strong{color:var(--cream);font-weight:700;text-align:right;}
+  .methodology-foot{margin-top:10px;font-size:9px;line-height:1.45;color:rgba(168,199,180,.8);}
+
   .banner .note{
     font-size:14px; color: var(--dim); line-height:1.7; margin-top:16px; text-align:left;
   }
@@ -464,6 +499,8 @@
   body.cinematic #clueCard,
   body.cinematic .sub,
   body.cinematic .progress,
+  body.cinematic .experiment-status,
+  body.cinematic .research-note,
   body.cinematic .personal-footer {
     opacity: 0;
     transform: translateY(8px);
@@ -739,38 +776,219 @@
     }
   }
 
+
+
+  .research-proposal {
+    margin-top: 20px;
+    padding: 18px 18px 20px;
+    border: 1px solid rgba(255,182,163,.45);
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(255,182,163,.09), rgba(255,92,138,.06));
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0,0,0,.18);
+  }
+  .proposal-label {
+    font-size: 9px; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--dim); margin-bottom: 9px;
+  }
+  .proposal-title {
+    font-family: Georgia, serif; font-style: italic;
+    font-size: clamp(22px, 5.8vw, 29px); line-height: 1.15;
+    color: var(--cream);
+  }
+  .proposal-copy {
+    margin: 12px auto 0; max-width: 330px;
+    font-size: 13px; line-height: 1.65; color: var(--dim);
+  }
+  .proposal-question {
+    margin-top: 15px; color: var(--marigold);
+    font-size: 14px; font-weight: 700;
+  }
+  @media (max-width: 480px) {
+    .research-proposal { padding: 16px 14px 18px; margin-top: 16px; }
+    .proposal-copy { font-size: 12.5px; }
+  }
+
+  /* ===== FINAL PHONE-FIRST PASS ===== */
+  body::before{
+    content:"☘";
+    position:fixed;
+    right:-22px;
+    top:10%;
+    font-size:130px;
+    line-height:1;
+    color:rgba(73,185,111,.055);
+    transform:rotate(18deg);
+    pointer-events:none;
+    z-index:0;
+  }
+  body::after{
+    content:"✦";
+    position:fixed;
+    left:18px;
+    bottom:22%;
+    font-size:20px;
+    color:rgba(168,230,161,.18);
+    pointer-events:none;
+    z-index:0;
+  }
+  .lights span{ background:var(--marigold)!important; box-shadow:0 0 10px 2px rgba(73,185,111,.45)!important; }
+  .lights span:nth-child(3n){ background:var(--magenta)!important; box-shadow:0 0 10px 2px rgba(99,214,154,.45)!important; }
+  .flag{ border-top-color:var(--marigold); }
+  .flag:nth-child(3n+1){ border-top-color:var(--magenta); }
+  .flag:nth-child(3n+2){ border-top-color:var(--dim); }
+  .eyebrow::before,.eyebrow::after{ background:linear-gradient(90deg,transparent,rgba(99,214,154,.75)); }
+  h1 .soft,h1 .accent{ color:var(--marigold); }
+  h1 .accent::after{ border-top-color:var(--magenta); }
+  .title-kicker{ border-color:rgba(99,214,154,.28); background:var(--leaf-soft); }
+  .dot.active{background:var(--marigold)} .dot.done{background:var(--magenta)}
+  .tile.correct,.key.correct{background:var(--magenta);border-color:var(--magenta)}
+  .tile.present,.key.present{background:var(--marigold);border-color:var(--marigold)}
+  .tile.absent,.key.absent{background:var(--absent);border-color:var(--absent)}
+
+  /* Keep the Wordle board visible and centered on every phone. */
+  #board{
+    display:flex!important;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    width:min(92vw,330px)!important;
+    max-width:330px!important;
+    margin:14px auto 16px!important;
+    gap:6px!important;
+  }
+  #board .row{
+    display:grid!important;
+    width:100%!important;
+    max-width:100%!important;
+    gap:6px!important;
+  }
+  #board .tile{
+    width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+    aspect-ratio:1/1;
+    font-size:clamp(18px,6vw,24px);
+  }
+
+  #keyboard{
+    width:min(96vw,390px)!important;
+    max-width:390px!important;
+    margin:4px auto 0!important;
+  }
+  #keyboard .krow{width:100%!important;display:flex!important;justify-content:center!important;gap:4px!important;}
+  #keyboard .key{flex:1 1 0!important;min-width:0!important;min-height:48px;padding:11px 2px;font-size:clamp(10px,3.2vw,13px);}
+  #keyboard .key.wide{flex:1.45 1 0!important;}
+
+  /* Prevent the header from stealing the viewport from the game. */
+  @media (max-width:480px){
+    html,body{width:100%;min-width:0;overflow-x:hidden;}
+    body{
+      display:flex;
+      align-items:center!important;
+      padding: max(26px, env(safe-area-inset-top)) 10px max(24px, env(safe-area-inset-bottom));
+    }
+    header{width:100%!important;max-width:390px!important;margin:8px auto 0!important;}
+    .eyebrow{margin-bottom:10px;font-size:9px;letter-spacing:.18em;}
+    h1{
+      width:100%!important;
+      max-width:390px!important;
+      font-size:clamp(38px,12.5vw,58px)!important;
+      line-height:.9!important;
+      letter-spacing:-.045em!important;
+    }
+    h1 .title-line{display:block!important;width:100%!important;white-space:normal!important;text-align:center!important;}
+    .title-kicker{margin-top:12px;font-size:8.5px;padding:6px 10px;}
+    .sub{width:min(92vw,350px)!important;font-size:12.5px;line-height:1.45;margin:8px auto 0!important;text-align:center;}
+    .progress{width:100%!important;justify-content:center!important;margin:10px auto 0!important;}
+    .toolbar{width:100%!important;justify-content:center!important;margin:10px auto 0!important;}
+    .iconbtn{min-height:40px;}
+    #clueCard{width:min(90vw,330px)!important;margin:4px auto 2px!important;}
+    #msg{width:min(92vw,340px);margin:0 auto!important;min-height:18px;}
+    #colorGuide{margin-bottom:8px;}
+    .personal-footer{margin-top:10px;font-size:8px;}
+  }
+  @media (max-width:360px){
+    body{padding-left:8px;padding-right:8px;}
+    #board{width:min(92vw,285px)!important;max-width:285px!important;}
+    #board .row{gap:5px!important;}
+    #keyboard{width:100%!important;}
+    #keyboard .krow{gap:3px!important;}
+    #keyboard .key{min-height:46px;font-size:9px;}
+  }
+  @media (max-height:740px) and (max-width:480px){
+    body{padding-top:max(18px,env(safe-area-inset-top));}
+    header{margin-top:2px!important;}
+    .sub{margin-top:5px!important;}
+    .toolbar{margin-top:7px!important;}
+    #board{margin-top:9px!important;margin-bottom:10px!important;gap:5px!important;}
+    #board .row{gap:5px!important;}
+    #board .tile{font-size:19px;}
+    #keyboard .key{min-height:44px;padding-top:9px;padding-bottom:9px;}
+    .personal-footer{display:none;}
+  }
+
+
+  /* Final mobile polish */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+  body { margin: 0; padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
+  header, .toolbar, #clueCard, #msg, #colorGuide, #board, #keyboard, .personal-footer {
+    margin-left: auto !important; margin-right: auto !important;
+  }
+  #board { width: min(92vw, 330px) !important; max-width: 330px !important; }
+  .row { width: 100% !important; display: grid !important; gap: 5px; }
+  .tile { width: 100% !important; min-width: 0 !important; }
+  #keyboard { width: min(96vw, 430px) !important; max-width: 430px !important; }
+  .krow { justify-content: center !important; }
+  .key { min-width: 0 !important; }
+  .banner { width: min(92vw, 560px) !important; max-width: 560px !important; margin: 0 auto !important; }
+  .banner-body { width: 100%; padding: 24px 18px 26px !important; }
+  .headline, .note, .sign { overflow-wrap: anywhere; }
+  @media (max-width: 380px) {
+    #board { width: min(92vw, 300px) !important; }
+    .tile { font-size: 18px !important; }
+    .key { padding: 11px 2px !important; font-size: 10px !important; }
+    .headline { font-size: clamp(24px, 8vw, 34px) !important; line-height: 1.05 !important; }
+  }
 </style>
 </head>
 <body>
 
   <div class="lights" id="topLights"></div>
   <header>
-    <p class="eyebrow">A VERY SMALL DETOUR</p>
+    <p class="eyebrow">A COMPLETELY UNNECESSARY STUDY</p>
     <h1 id="mainHeading">
-      <span class="title-line"><span class="soft">THREE</span> WORDS.</span>
-      <span class="title-line"><span class="accent">ONE DATE</span><span class="heart">♥</span></span>
+      <span class="title-line"><span class="soft">THE ANAKHA</span></span>
+      <span class="title-line"><span class="accent">STUDY</span><span class="heart">♥</span></span>
     </h1>
-    <div class="title-kicker">a very small detour, allegedly</div>
-    <p class="sub" id="subText">No pressure. I could've just asked you out. But apparently, this seemed more fun.</p>
-    <div class="progress" id="progressDots"></div>
+    <div class="title-kicker">peer review was definitely not consulted</div>
+    <p class="sub" id="subText">You study phytochemicals. I decided to conduct some research of my own.</p>
   </header>
 
   <div class="toolbar">
-    <button class="iconbtn" id="hintBtn" onclick="useHint()">Hint (1 left)</button>
+    <button class="iconbtn" id="hintBtn" onclick="useHint()">Request Peer Review</button>
   </div>
 
+  <div class="research-note" id="researchNote" aria-live="polite"></div>
   <div id="clueCard"><span class="clue-label">Clue</span><span id="clueText"></span></div>
   <div id="msg" role="status" aria-live="polite"></div>
+  <div id="colorGuide" aria-label="Color coding rules">
+    <div class="guide-title">How the colors work</div>
+    <div class="guide-row"><span class="guide-swatch correct">A</span><div class="guide-copy"><strong>Bright green</strong><span>Right letter, right spot</span></div></div>
+    <div class="guide-row"><span class="guide-swatch present">A</span><div class="guide-copy"><strong>Light green</strong><span>Right letter, wrong spot</span></div></div>
+    <div class="guide-row"><span class="guide-swatch absent">A</span><div class="guide-copy"><strong>Dark green</strong><span>Letter isn't in the word</span></div></div>
+  </div>
   <div id="board"></div>
   
 
 
-<div id="keyboard"></div><div class="personal-footer">made for one very specific person ✦</div>
+<div id="keyboard"></div><div class="personal-footer">made for one very specific scientist 🌿</div>
 
   <div id="transition">
     <div class="trans-card">
-      <p class="eyebrow2">ONE DOWN. TWO TO GO.</p>
-      <p class="line" id="transLine">Okay. We have the food sorted. Now let's address the slightly more dangerous part of this plan.</p>
+      <p class="eyebrow2">OBSERVATION RECORDED</p>
+      <p class="line" id="transLine">Interesting. The data is already getting slightly concerning.</p>
       <button onclick="startStage(stageIndex + 1)">Continue</button>
     </div>
   </div>
@@ -778,46 +996,59 @@
   
   <div id="cinematicReveal">
     <div class="cinematic-inner happy-reveal">
-      <div class="cinematic-kicker">Okay. That was the point.</div>
-      <p class="cinematic-line">A little flour. A little chaos. And a date. ❤️</p>
+      <div class="cinematic-kicker">RESULTS ARE IN.</div>
+      <p class="cinematic-line">The subject is... surprisingly difficult to classify. ❤️</p>
       <div class="date-plan-card">
         <div class="date-plan-top">
-          <div class="date-plan-title">DATE PLAN</div>
+          <div class="date-plan-title">ANAKHA // FIELD NOTES</div>
           <div class="date-plan-heart">♥</div>
         </div>
         <div class="date-plan-list">
-          <div class="date-plan-item"><div class="date-plan-icon">🍕</div><div><strong>Make pizza together</strong><br>pretend we know what we're doing</div></div>
-          <div class="date-plan-item"><div class="date-plan-icon">🤌</div><div><strong>Get flour absolutely everywhere</strong><br>this is apparently part of the plan</div></div>
-          <div class="date-plan-item"><div class="date-plan-icon">🧀</div><div><strong>Argue about cheese</strong><br>there is no such thing as too much</div></div>
-          <div class="date-plan-item"><div class="date-plan-icon">😂</div><div><strong>Questionable slap choices</strong><br>entirely dependent on my behaviour</div></div>
-          <div class="date-plan-item"><div class="date-plan-icon">❤️</div><div><strong>Have a really good time</strong><br>this one is non-negotiable</div></div>
+          <div class="date-plan-item"><div class="date-plan-icon">🧪</div><div><strong>Research mode: activated</strong><br>phytochemicals have entered the chat</div></div>
+          <div class="date-plan-item"><div class="date-plan-icon">💥</div><div><strong>Canon events: several</strong><br>the year has clearly been doing too much</div></div>
+          <div class="date-plan-item"><div class="date-plan-icon">🤯</div><div><strong>Goes crazy about everything</strong><br>scientifically difficult to measure</div></div>
+          <div class="date-plan-item"><div class="date-plan-icon">🎯</div><div><strong>Difficulty level: unnecessarily high</strong><br>researcher remains weirdly committed to the challenge</div></div>
+          <div class="date-plan-item"><div class="date-plan-icon">😊</div><div><strong>Smile: suspiciously effective</strong><br>potentially responsible for multiple findings</div></div>
+          <div class="date-plan-item"><div class="date-plan-icon">🧬</div><div><strong>Primary objective: survive the year</strong><br>preferably with fewer plot twists</div></div>
         </div>
-        <div class="date-plan-footer">Table for two? <span>♡</span></div>
+        <div class="date-plan-footer">Conclusion? Further research required. Challenge accepted. <span>♡</span></div>
       </div>
-      <p class="cinematic-small always-visible">I could've just asked you out. But apparently, I wanted to make pizza with you first. 🍕</p>
-      <button onclick="openFinalReveal()">Okay fine, ask me properly ♡</button>
+      <p class="cinematic-small always-visible">For someone who wants the year to end, you have somehow made it very entertaining to observe.</p>
+      <button onclick="openFinalReveal()">Okay, what is the conclusion? ♡</button>
     </div>
   </div>
   <div class="tiny-toast" id="tinyToast"></div>
 
   <div id="overlay">
     <div class="banner" id="bannerBox">
-      
       <div class="banner-body">
-        <p class="eyebrow2">OKAY, NOW WE CAN SAY IT PROPERLY.</p>
+        <p class="eyebrow2">FINAL REPORT // ANAKHA</p>
         <p class="headline">
-          <span class="hi">Tanya, this is me asking you out.</span><br>Pizza, chaos, questionable cooking skills... what do you say? ❤️
+          <span class="hi">The findings are inconclusive.</span><br>Mostly because you're somehow equal parts science, chaos and an unfairly good smile.
         </p>
         <p class="note">
-          I could've sent you a normal message. Instead, I made you play a three-word game because apparently I enjoy making things unnecessarily dramatic.<br><br>
-          So here's the actual plan: <strong>we make pizza together, get flour absolutely everywhere, argue about how much cheese is enough, and see where the evening goes.</strong><br><br>
-          There is also a non-zero chance my behaviour leads to a questionable slap choice. I'm willing to accept this risk.
+          Subject appears to be pursuing serious phytochemical research while simultaneously going completely crazy about approximately everything.<br><br>
+          Multiple canon events have been recorded. Subject has expressed a strong desire for the year to end. Researcher recommends fewer plot twists, more laughing, and absolutely no additional character development before December.<br><br>
+          <strong>Final observation:</strong> subject is exceptionally difficult to impress. Fortunately, researcher appears to enjoy a challenge.
         </p>
-        <p class="sign">With questionable judgement and very good intentions,<br>me ♡</p>
-
-        <div class="banner-actions">
-          <button class="btn-primary" onclick="resetGame()">Okay, when are we making pizza? 🍕</button>
+        <div class="research-proposal">
+          <div class="proposal-label">PROPOSED NEXT EXPERIMENT</div>
+          <div class="proposal-title">One field study.<br>Outside the lab.</div>
+          <div class="proposal-copy">You, me, something good to eat, and enough time to determine whether the chemistry is actually as interesting in person.</div>
+          <div class="proposal-question">Would you be willing to participate? ♡</div>
         </div>
+        <div class="methodology-box">
+          <div class="proposal-label">METHODOLOGY</div>
+          <div class="methodology-grid">
+            <span>Sample size</span><strong>1</strong>
+            <span>Control group</span><strong>Non-existent</strong>
+            <span>Objectivity</span><strong>0%</strong>
+            <span>Peer review</span><strong>Declined</strong>
+          </div>
+          <div class="methodology-foot">Disclaimer: this study has not been peer reviewed and should not be mistaken for serious science. The researcher accepts no responsibility for smiling at inappropriate moments.</div>
+        </div>
+
+        <p class="sign">Research conducted with questionable methodology,<br>but very good intentions. ♡</p>
       </div>
     </div>
   </div>
@@ -828,8 +1059,8 @@
 
   
   function showOutOfChancesHint(){
-    if (stageIndex !== 1 || !msgEl) return;
-    msgEl.innerHTML = 'Okay, enough clues.<br><strong>Just look in the mirror, girl! ♡</strong>';
+    if (!msgEl) return;
+    msgEl.innerHTML = 'Okay, enough clues.<br><strong>Maybe the scientist needs a little outside assistance. ♡</strong>';
     msgEl.classList.remove('msg-pop');
     void msgEl.offsetWidth;
     msgEl.classList.add('msg-pop');
@@ -842,7 +1073,7 @@
     if (stageIndex !== 1) return;
     const box = document.getElementById('mirrorLifeline');
     if (box) box.classList.add('show');
-    if (msgEl) msgEl.textContent = "Girl, you're overthinking this.";
+    if (msgEl) msgEl.textContent = "Scientist, you're overthinking this.";
   }
 
   function grantFinalTry(){
@@ -857,11 +1088,15 @@
   function checkMomosEasterEgg(){
     if (stageIndex !== 1) return;
     const g = (currentGuess || "").toUpperCase();
-    if (g === "MOMOS" || g.startsWith("MOMO")) toast("Wrong game. Right conversation. 😂");
+    if (g === "MOMOS" || g.startsWith("MOMO")) toast("Wrong experiment. Right energy. 😂");
   }
 
-  function cinematicSolvedIshita(){
+  function cinematicSolvedAnakha(){
     gameOver = true;
+    const obj = document.getElementById('objectivityFill');
+    const val = document.getElementById('objectivityValue');
+    if(obj) obj.style.width = '0%';
+    if(val) val.textContent = '0%';
     const correctTiles = Array.from(document.querySelectorAll('.tile.correct')).slice(-wordLen());
     correctTiles.forEach((tile, i) => {
       tile.classList.remove('win-pulse');
@@ -878,27 +1113,47 @@
 
   const playfulWrong = {
     0: [
-      "Bold start. I like the confidence.",
-      "Wrong, but at least you are hungry.",
-      "Somewhere, a pizza dough is disappointed.",
-      "We're getting closer. Probably.",
-      "Nope. But I promise this is worth it."
+      "Interesting hypothesis. Wrong conclusion.",
+      "The lab notes say: absolutely not.",
+      "Strong confidence. Weak experimental result.",
+      "This is why peer review exists. 😂",
+      "Nope. But the chaos is promising."
     ],
     1: [
-      "That guess was bad enough to earn a slap. 😂",
-      "Careful. You might actually be giving me ideas.",
-      "Okay, we're getting dangerously close to the slap.",
-      "You can decide whether I deserve the slap after you solve it. 😭",
-      "I feel like you already know this one."
+      "That is not the kind of event we are studying.",
+      "Close. The plot thickens.",
+      "The canon events remain undefeated.",
+      "At this point, the year is writing the experiment for you. 😭",
+      "Correct direction. Questionable methodology."
     ],
     2: [
-      "You have literally solved the first two words. Come on.",
-      "Think about what all of this is suspiciously building towards.",
-      "Pizza. Slap. ...what could possibly come next? 😂",
-      "This is the part where you realise why I made the game.",
-      "Okay, I refuse to believe you haven't figured this out."
+      "You're overthinking the final variable.",
+      "Hint: this one is visible every time you smile.",
+      "The data is literally on your face. 😂",
+      "Come on. Even a scientist should see this one.",
+      "One beautiful little five-letter answer. ❤️"
     ]
   };
+
+  const researchNotes = [
+    "Subject appears confident. Evidence supporting this confidence: questionable.",
+    "Researcher notes a statistically significant increase in chaos.",
+    "Experimental conditions remain deeply unserious.",
+    "Peer review has been requested. Peer review has declined.",
+    "The researcher is beginning to suspect personal bias.",
+    "Scientific objectivity is leaving the building."
+  ];
+
+  function showResearchNote(){
+    const el = document.getElementById('researchNote');
+    if(!el) return;
+    const note = researchNotes[Math.min(wrongCount, researchNotes.length - 1)];
+    el.innerHTML = "<strong>Researcher's note #" + String(wrongCount).padStart(2,'0') + "</strong> · " + note;
+    el.classList.remove('show');
+    void el.offsetWidth;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 3600);
+  }
 
   function playfulMessage(){
     const arr = playfulWrong[stageIndex] || playfulWrong[0];
@@ -908,6 +1163,8 @@
     msgEl.classList.remove('msg-pop');
     void msgEl.offsetWidth;
     msgEl.classList.add('msg-pop');
+    showResearchNote();
+    updateExperimentStatus();
   }
 
   function toast(text){
@@ -948,39 +1205,39 @@
   --------------------------------- */
   const STAGES = [
     {
-      word: "PIZZA",
-      transitionLine: "Okay, first things first. We need to make the pizza. And by make, I mean we both pretend we know what we're doing.",
+      word: "PHYTO",
+      transitionLine: "Excellent. We have established that the scientist is, in fact, scientifically inclined.",
       clues: [
-        "Something we're going to make together, preferably without setting off the fire alarm.",
-        "It starts with dough, sauce and cheese. The rest is basically improvisation.",
-        "There will probably be flour everywhere. This is part of the experience.",
-        "One of us will say 'I think that's enough cheese.' The other will ignore them.",
-        "The shape may be questionable. The taste is hopefully less questionable.",
-        "Okay fine. It's the first thing I want to do with you. 🍕"
+        "A suspiciously short word for something that has taken up a suspiciously large amount of your brain.",
+        "Think plants, chemistry and the kind of research that makes normal people nod knowingly.",
+        "Your BSc era has entered the chat.",
+        "The first half of the thing you're apparently deep in right now.",
+        "Five letters. Starts with PHY.",
+        "Okay, scientist. Surely you know this one. 🧪"
       ]
     },
     {
-      word: "SLAP",
-      transitionLine: "Pizza: sorted. Now for the part where I apparently decided to volunteer myself for danger. 😭",
+      word: "CANON",
+      transitionLine: "Scientific findings aside, the year itself appears to have conducted several experiments on you.",
       clues: [
-        "Something that would probably happen if I get a little too annoying.",
-        "A completely optional addition to the date. Hopefully.",
-        "The risk increases exponentially with bad jokes and excessive flirting.",
-        "I'm not saying I want one... but I am suspiciously okay with the possibility.",
-        "Think: hand, cheek, and me making questionable decisions.",
-        "Yes. It's the slightly dangerous word. 😂"
+        "The kind of events nobody puts on their vision board.",
+        "There have been... several. Enough that you would like this year to end immediately.",
+        "Every main character gets them. Yours seem to have been unusually committed.",
+        "They change the plot, build character and generally refuse to ask permission.",
+        "Not cannon. No explosions. Just extremely inconvenient life lore.",
+        "Five letters. The events that made this year feel like a season finale. 💥"
       ]
     },
     {
-      word: "DATE",
-      transitionLine: "Right. Pizza made, dignity questionable, slap risk acknowledged. There's only one thing left to call this.",
+      word: "SMILE",
+      transitionLine: "And now for the variable that somehow makes the entire dataset much harder to analyse.",
       clues: [
-        "Something this unnecessarily elaborate game has been suspiciously building towards.",
-        "Two people. One plan. Hopefully good pizza.",
-        "It involves spending time together without pretending it's just a 'casual plan.'",
-        "The pizza is homemade. The excuse for making it together is slightly less innocent.",
-        "Four letters. Probably the reason you're still playing this game.",
-        "Okay, Tanya. What do you think I'm actually asking you? ❤️"
+        "A five-letter variable that tends to improve the room immediately.",
+        "Scientifically unverified, but suspiciously effective.",
+        "Often appears when you're genuinely happy or completely losing it over something.",
+        "The kind of thing that makes people forget what they were saying for a second.",
+        "Five letters. Starts with S. You probably use it more than you realise.",
+        "Okay, fine. This is the one I was actually trying to study. ❤️"
       ]
     }
   ];
@@ -1015,14 +1272,32 @@
   }
   function answer(){ return STAGES[stageIndex].word; }
 
+  const STAGE_NAMES = ["Phytochemical profile", "Canon event analysis", "Smile variable"];
+
+  function updateExperimentStatus(){
+    const total = STAGES.length;
+    const progress = ((stageIndex + 1) / total) * 100;
+    const fill = document.getElementById('statusFill');
+    const stage = document.getElementById('statusStage');
+    const value = document.getElementById('objectivityValue');
+    const obj = document.getElementById('objectivityFill');
+    if(fill) fill.style.width = progress + '%';
+    if(stage) stage.textContent = String(stageIndex + 1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0') + ' · ' + STAGE_NAMES[stageIndex];
+    const objectivity = Math.max(0, 100 - wrongCount * 15);
+    if(obj){ obj.style.width = objectivity + '%'; obj.style.background = objectivity > 55 ? 'var(--marigold)' : objectivity > 25 ? 'var(--leaf)' : 'var(--magenta)'; }
+    if(value) value.textContent = objectivity + '%';
+  }
+
   function buildProgressDots(){
     const el = document.getElementById('progressDots');
+    if(!el) return;
     el.innerHTML = "";
     STAGES.forEach((s, i) => {
       const d = document.createElement('div');
       d.className = 'dot' + (i < stageIndex ? ' done' : i === stageIndex ? ' active' : '');
       el.appendChild(d);
     });
+    updateExperimentStatus();
   }
 
   function buildBoard(){
@@ -1037,7 +1312,7 @@
     const row = document.createElement('div');
     row.className = 'row';
     row.id = 'row-' + r;
-    row.style.gridTemplateColumns = `repeat(${wordLen()}, 48px)`;
+    row.style.gridTemplateColumns = `repeat(${wordLen()}, minmax(0, 1fr))`;
     for(let c=0; c<wordLen(); c++){
       const tile = document.createElement('div');
       tile.className = 'tile';
@@ -1106,13 +1381,13 @@
   }
 
   function useHint(){
-    toast(stageIndex === 0 ? "Fine. One tiny clue." : "Using your one lifeline wisely, we see.");
     if(hintUsed || gameOver) return;
     hintUsed = true;
     const w = answer();
     const idx = Math.floor(Math.random() * w.length);
-    showMessage(`Hint — letter ${idx + 1} is ${w[idx]}`, 4000);
-    hintBtn.textContent = "Hint used";
+    toast("Peer review returned one useful observation.");
+    showMessage(`Peer review — letter ${idx + 1} is ${w[idx]}`, 4000);
+    hintBtn.textContent = "Peer review used";
     hintBtn.disabled = true;
   }
 
@@ -1209,18 +1484,21 @@
     extraRowCount = 0;
     Object.keys(keyStates).forEach(k => delete keyStates[k]);
     document.getElementById('transition').classList.remove('show');
-    hintBtn.textContent = "Hint (1 left)";
+    hintBtn.textContent = "Request Peer Review";
     hintBtn.disabled = false;
     buildBoard();
     buildKeyboard();
     buildProgressDots();
     msgEl.textContent = "";
+    const note = document.getElementById('researchNote');
+    if(note) note.classList.remove('show');
+    updateExperimentStatus();
   }
 
   function launchWin(){
     setTimeout(() => {
       buildProgressDots();
-      cinematicSolvedIshita();
+      cinematicSolvedAnakha();
       dropConfetti();
     }, 500);
   }
@@ -1245,6 +1523,7 @@
   function dropConfetti(){
     heartConfetti();
   }
+
 
   function resetGame(){
     document.getElementById('overlay').classList.remove('show');
