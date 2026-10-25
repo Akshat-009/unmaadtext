@@ -3,100 +3,505 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Personal Interview // Fellow Hater</title>
+<meta name="theme-color" content="#21182B">
+<title>The Priyanshi Test</title>
 <style>
-:root{--bg:#07140f;--panel:#0c1d16;--cream:#f4efe4;--muted:#9bb5aa;--green:#9ee89a;--red:#b85b66;--amber:#d9b45b;--absent:#20352d;--line:rgba(158,232,154,.16)}
+:root{--bg:#21182B;--panel:#33243F;--cream:#FFF8FF;--muted:#CBB9D8;--red:#C28AE0;--blue:#788F78;--gold:#D8B8F0;--absent:#51445B;--line:rgba(255,248,255,.17)}
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:var(--bg);color:var(--cream);font-family:Arial,Helvetica,sans-serif}
-body{min-height:100svh;padding:14px 10px calc(28px + env(safe-area-inset-bottom));display:flex;justify-content:center;overflow-x:hidden;-webkit-text-size-adjust:100%}
+body{min-height:100svh;padding:12px 9px calc(24px + env(safe-area-inset-bottom));display:flex;justify-content:center;overflow-x:hidden;-webkit-text-size-adjust:100%}
 main{width:min(100%,430px);position:relative;padding:0 2px}
-header{text-align:center;padding-top:6px}
-.eyebrow{margin:0 0 12px;font-size:9px;letter-spacing:.22em;color:var(--muted)}
-h1{margin:0 auto;font-family:Georgia,'Times New Roman',serif;font-size:clamp(38px,11.5vw,62px);line-height:.88;letter-spacing:-.045em;text-transform:uppercase;max-width:100%;overflow-wrap:anywhere}
-.title-line{display:block}.soft{color:var(--cream)}.accent{color:var(--green);font-style:italic}.heart{color:var(--red);font-size:.45em;vertical-align:top;margin-left:2px}
-.sub{width:min(94%,370px);margin:16px auto 0;color:var(--muted);font-size:clamp(12px,3.5vw,14px);line-height:1.45;text-align:center}
-.toolbar{display:flex;justify-content:center;margin:14px 0 9px}.hint{border:1px solid var(--line);background:var(--panel);color:var(--cream);border-radius:12px;padding:11px 18px;font-size:13px;cursor:pointer}.hint:disabled{opacity:.5}
-#msg{min-height:20px;text-align:center;color:var(--green);font-size:12px;font-weight:700;margin:2px auto 4px}
-#clueCard{display:none;width:min(94%,360px);margin:4px auto 8px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.025);color:var(--muted);font-size:11px;line-height:1.35;text-align:center}#clueCard.show{display:block}.clue-label{color:var(--green);font-weight:800;letter-spacing:.14em;font-size:8px;margin-right:6px}
-.legend{width:min(100%,360px);margin:8px auto 10px;padding:7px 5px;border:1px solid var(--line);border-radius:10px;display:flex;justify-content:center;align-items:center;gap:4px;color:var(--muted);font-size:clamp(8px,2.5vw,9px);white-space:nowrap}.legend b{color:var(--cream);letter-spacing:.1em;font-size:8px;margin-right:3px}.sw{width:17px;height:17px;border-radius:4px;display:grid;place-items:center;font-weight:800;color:var(--cream)}.correct{background:var(--red)!important;color:var(--cream)!important}.present{background:var(--amber)!important;color:#17140d!important}.absent{background:var(--absent)!important;color:#8ea29a!important}
-.round{font-size:9px;letter-spacing:.18em;color:var(--muted);text-align:center;margin:8px 0 7px}
-#board{width:min(92vw,340px);margin:0 auto 10px;display:flex;flex-direction:column;gap:5px}
-.row{width:100%;display:grid;grid-template-columns:repeat(var(--cols,5),minmax(0,1fr));gap:5px}
-.tile{width:100%;aspect-ratio:1;border:1px solid rgba(244,239,228,.17);border-radius:5px;background:rgba(255,255,255,.025);display:grid;place-items:center;font-size:clamp(17px,5.5vw,24px);font-weight:800;letter-spacing:.02em;color:var(--cream);transition:background .2s,border-color .2s;user-select:none}.tile.filled{border-color:rgba(244,239,228,.5)}
-#keyboard{width:min(100%,400px);margin:8px auto 0;display:flex;flex-direction:column;gap:6px;position:relative;z-index:5}.krow{display:flex;justify-content:center;gap:4px;width:100%}.krow.middle{padding:0 4.5%}.spacer-key{flex:0.5;min-width:0}.key{appearance:none;-webkit-appearance:none;flex:1;min-width:0;min-height:43px;height:43px;border:0;border-radius:6px;background:#152720;color:var(--cream);font-weight:800;font-size:clamp(9px,2.8vw,11px);cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none}.key.wide{flex:1.55;font-size:9px}.key.back{font-size:18px;line-height:1}.key.correct{background:var(--red)!important;color:var(--cream)!important}.key.present{background:var(--amber)!important;color:#17140d!important}.key.absent{background:var(--absent)!important;color:#8ea29a!important}.key:active{transform:scale(.97)}
-.keyboard-label{text-align:center;margin:2px 0 4px;color:#71877d;font-size:7px;letter-spacing:.18em;font-weight:800}.footer{text-align:center;margin:13px 0 0;color:#71877d;font-size:8px;letter-spacing:.16em;text-transform:uppercase}
-#transition,#reveal{display:none;position:fixed;inset:0;background:rgba(3,9,7,.96);z-index:20;align-items:center;justify-content:center;padding:20px;overflow:hidden}#transition.show,#reveal.show{display:flex}.transition-hearts{position:absolute;inset:0;pointer-events:none;overflow:hidden}.transition-heart{position:absolute;bottom:-30px;color:var(--red);font-size:18px;opacity:0;animation:floatHeart 3.6s ease-in forwards}.transition-heart:nth-child(1){left:8%;animation-delay:.05s}.transition-heart:nth-child(2){left:18%;font-size:13px;animation-delay:.8s}.transition-heart:nth-child(3){left:31%;font-size:22px;animation-delay:.35s}.transition-heart:nth-child(4){left:45%;font-size:15px;animation-delay:1.15s}.transition-heart:nth-child(5){left:57%;font-size:24px;animation-delay:.55s}.transition-heart:nth-child(6){left:68%;font-size:14px;animation-delay:1.35s}.transition-heart:nth-child(7){left:79%;font-size:20px;animation-delay:.25s}.transition-heart:nth-child(8){left:90%;font-size:12px;animation-delay:1.05s}.transition-heart:nth-child(9){left:24%;font-size:11px;animation-delay:1.7s}.transition-heart:nth-child(10){left:73%;font-size:17px;animation-delay:1.9s}.transition-heart:nth-child(11){left:53%;font-size:11px;animation-delay:2.1s}.transition-heart:nth-child(12){left:12%;font-size:16px;animation-delay:2.3s}@keyframes floatHeart{0%{transform:translateY(0) scale(.7) rotate(-8deg);opacity:0}12%{opacity:.8}70%{opacity:.42}100%{transform:translateY(-105vh) scale(1.15) rotate(14deg);opacity:0}}.card{position:relative;width:min(92vw,430px);background:#0c1d16;border:1px solid var(--line);border-radius:20px;padding:28px 22px;text-align:center;box-shadow:0 20px 70px rgba(0,0,0,.52);z-index:1}.card .kicker{font-size:9px;letter-spacing:.2em;color:var(--green);font-weight:800}.transition-round{margin-top:8px;font-size:8px;letter-spacing:.2em;color:#71877d}.card h2{font:italic 36px/1 Georgia,serif;margin:13px 0 10px;color:var(--cream)}.heart-burst{color:var(--red);font-size:28px;letter-spacing:6px;margin:0 0 6px;animation:heartPulse .8s ease-in-out infinite alternate}@keyframes heartPulse{from{transform:scale(.96);opacity:.75}to{transform:scale(1.05);opacity:1}}.card p{color:var(--muted);font-size:13px;line-height:1.55}.card button{margin-top:12px;border:1px solid rgba(158,232,154,.3);background:rgba(158,232,154,.06);color:var(--cream);border-radius:11px;padding:12px 20px;font-weight:700;cursor:pointer;min-height:44px}
-#reveal{overflow:auto}.reveal-card{max-width:500px}.report{font-size:9px;letter-spacing:.2em;color:var(--green);font-weight:800}.headline{font:italic 30px/1.08 Georgia,serif;margin:14px 0}.headline span{color:var(--green)}.note{color:var(--muted);font-size:13px;line-height:1.55}.proposal{margin-top:18px;border:1px solid var(--line);border-radius:14px;padding:16px}.proposal-label{font-size:8px;letter-spacing:.16em;color:var(--green);font-weight:800}.proposal-title{font:italic 23px/1.05 Georgia,serif;margin:9px 0}.proposal-copy{color:var(--muted);font-size:12px;line-height:1.45}.proposal button{width:100%;margin-top:13px;background:var(--green);color:#07140f;border:0;border-radius:10px;padding:12px;font-weight:800}.sign{color:#7f968c;font-size:11px;line-height:1.45;margin-top:16px}
-.heart-burst{display:flex;justify-content:center;gap:10px;height:22px;margin-top:8px}.heart-burst span{color:var(--red);font-size:16px;animation:heartFloat 1s ease-in-out infinite}.heart-burst span:nth-child(2){animation-delay:.12s}.heart-burst span:nth-child(3){animation-delay:.24s}.heart-burst span:nth-child(4){animation-delay:.36s}.heart-burst span:nth-child(5){animation-delay:.48s}@keyframes heartFloat{0%,100%{transform:translateY(4px) scale(.85);opacity:.5}50%{transform:translateY(-4px) scale(1.12);opacity:1}}
-.transition-card{opacity:0;transform:translateY(18px) scale(.96);pointer-events:none;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.8,.2,1)}#transition.card-ready .transition-card{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}.transition-heart-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;gap:10px;opacity:0;z-index:2;pointer-events:none}.transition-heart-center span{color:var(--red);font-size:34px;display:block;animation:centerHeart 1.25s cubic-bezier(.2,.75,.3,1) forwards}.transition-heart-center span:nth-child(2){animation-delay:.08s}.transition-heart-center span:nth-child(3){animation-delay:.16s}@keyframes centerHeart{0%{opacity:0;transform:translateY(35px) scale(.35)}25%{opacity:1}65%{opacity:1;transform:translateY(-10px) scale(1.25)}100%{opacity:0;transform:translateY(-70px) scale(1.65)}}#transition.heart-phase .transition-heart-center{opacity:1}#transition.heart-phase .transition-hearts{opacity:1}#transition.card-ready .transition-hearts{opacity:.7}.transition-hearts{transition:opacity .4s ease}.shake{animation:shake .3s ease}@keyframes shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
-@media(max-width:380px){body{padding:10px 7px calc(22px + env(safe-area-inset-bottom))}.eyebrow{font-size:8px;margin-bottom:9px}.sub{font-size:12px;margin-top:13px}.legend{font-size:8px;gap:3px;padding:6px 3px}.legend b{font-size:7px}.sw{width:16px;height:16px}.round{margin:7px 0 6px}.key{min-height:40px;height:40px;font-size:10px}.krow.middle{padding:0 4%}.spacer-key{flex:0.48}.headline{font-size:26px}.card{padding:24px 17px}}
-@media(max-height:760px) and (max-width:500px){header{padding-top:0}.eyebrow{margin-bottom:7px}.sub{margin-top:10px}.toolbar{margin:10px 0 6px}.legend{margin:5px auto 7px}.round{margin:6px 0}.tile{font-size:18px}.key{min-height:40px;height:40px}.footer{margin-top:9px}}
+main:before,main:after{content:"";position:fixed;pointer-events:none;z-index:0;opacity:.13}
+main:before{width:230px;height:230px;left:-120px;top:80px;background:repeating-radial-gradient(circle at 100% 0,transparent 0 23px,rgba(216,184,240,.48) 24px 25px,transparent 26px 46px);transform:rotate(12deg)}
+main:after{width:250px;height:250px;right:-140px;bottom:130px;background:repeating-radial-gradient(circle at 0 100%,transparent 0 25px,rgba(120,143,120,.55) 26px 27px,transparent 28px 50px);transform:rotate(-9deg)}
+header{text-align:center;padding-top:4px;position:relative;z-index:1}
+.eyebrow{margin:0 0 9px;font-size:8px;letter-spacing:.23em;color:var(--muted);font-weight:800}
+h1{margin:0 auto;font-family:Georgia,"Times New Roman",serif;font-size:clamp(38px,11.5vw,58px);line-height:.88;letter-spacing:-.055em;text-transform:uppercase;max-width:100%;overflow-wrap:anywhere}
+.title-line{display:block}.soft{color:var(--cream)}.accent{color:var(--red);font-style:italic}.heart{color:var(--gold);font-size:.42em;vertical-align:top;margin-left:2px}
+.sub{width:min(94%,360px);margin:12px auto 0;color:var(--muted);font-size:12px;line-height:1.4;text-align:center}
+.toolbar{display:flex;justify-content:center;margin:10px 0 7px;position:relative;z-index:2}
+.hint{border:1px solid var(--line);background:var(--panel);color:var(--cream);border-radius:10px;padding:9px 16px;font-size:11px;cursor:pointer}.hint:disabled{opacity:.45}
+#msg{min-height:18px;text-align:center;color:var(--gold);font-size:11px;font-weight:700;margin:1px auto 3px}
+#clueCard{display:block;width:min(94%,380px);margin:4px auto 9px;padding:14px 15px;border:1px solid rgba(244,240,232,.16);border-radius:13px;background:rgba(51,36,63,.9);color:var(--cream);font-size:clamp(14px,4.2vw,18px);font-weight:700;line-height:1.35;text-align:center;letter-spacing:-.01em;box-shadow:0 8px 24px rgba(0,0,0,.14)}#clueCard.show{display:block}.clue-label{display:block;color:var(--gold);font-weight:800;letter-spacing:.16em;font-size:8px;margin:0 0 6px;text-transform:uppercase}
+.legend{width:min(100%,360px);margin:6px auto 8px;padding:7px 5px;border:1px solid var(--line);border-radius:10px;display:flex;justify-content:center;align-items:center;gap:4px;color:var(--muted);font-size:clamp(8px,2.5vw,9px);white-space:nowrap}.legend b{color:var(--cream);letter-spacing:.1em;font-size:8px;margin-right:3px}.sw{width:17px;height:17px;border-radius:4px;display:grid;place-items:center;font-weight:800;color:var(--cream);font-size:9px}.legend .correct{background:var(--red)!important;color:#fff!important}.legend .present{background:var(--gold)!important;color:#17140d!important}.legend .absent{background:var(--absent)!important;color:#91a19e!important}
+.round{font-size:8px;letter-spacing:.19em;color:var(--muted);text-align:center;margin:7px 0 6px}
+#board{width:min(92vw,335px);margin:7px auto 9px;display:flex;flex-direction:column;gap:5px;position:relative;z-index:2;visibility:visible;opacity:1}
+.row{width:100%;display:grid;gap:5px}
+.tile{width:100%;aspect-ratio:1/1;min-width:0;min-height:0;border:1px solid rgba(244,240,232,.18);border-radius:5px;background:#33243F;display:grid;place-items:center;font-size:clamp(17px,5.4vw,23px);font-weight:800;letter-spacing:.02em;color:var(--cream);user-select:none;transform-style:preserve-3d}
+.tile.filled{border-color:rgba(244,240,232,.48);animation:pop .11s ease-out}
+.tile.flip{animation:flip .55s ease both}
+@keyframes pop{50%{transform:scale(1.045)}}
+@keyframes flip{0%{transform:rotateX(0)}45%{transform:rotateX(90deg)}55%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
+.tile.correct,.key.correct{background:#C28AE0!important;color:#21182B!important;border-color:#C28AE0!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}
+.tile.present,.key.present{background:#D8B8F0!important;color:#21182B!important;border-color:#D8B8F0!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}
+.tile.absent,.key.absent{background:#51445B!important;color:#CBB9D8!important;border-color:#51445B!important}
+#keyboard{width:min(100%,400px);margin:7px auto 0;display:flex;flex-direction:column;gap:5px;position:relative;z-index:5}
+.krow{display:flex;justify-content:center;gap:4px;width:100%}.krow.middle{padding:0 4.5%}.spacer-key{flex:.5;min-width:0}
+.key{appearance:none;-webkit-appearance:none;flex:1;min-width:0;min-height:41px;height:41px;border:0;border-radius:6px;background:#44334F;color:var(--cream);font-weight:800;font-size:clamp(9px,2.8vw,11px);cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none}.key.wide{flex:1.55;font-size:8px}.key.back{font-size:17px}.key:active{transform:scale(.97)}
+.keyboard-label{text-align:center;margin:2px 0 3px;color:#627A7A;font-size:7px;letter-spacing:.18em;font-weight:800}.footer{text-align:center;margin:10px 0 0;color:#627A7A;font-size:7px;letter-spacing:.15em;text-transform:uppercase}
+#transition,#reveal{display:none;position:fixed;inset:0;background:rgba(3,9,14,.985);z-index:20;align-items:center;justify-content:center;padding:20px;overflow:hidden}
+#transition.show,#reveal.show{display:flex}
+.transition-hearts{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:0}
+#transition.show .transition-hearts,#reveal.show .transition-hearts{opacity:1}
+.transition-heart{position:absolute;bottom:-35px;color:#C28AE0;font-size:18px;opacity:0;will-change:transform,opacity}
+.transition-heart:nth-child(1){left:7%;font-size:15px}.transition-heart:nth-child(2){left:18%;font-size:11px}.transition-heart:nth-child(3){left:30%;font-size:20px}.transition-heart:nth-child(4){left:43%;font-size:14px}.transition-heart:nth-child(5){left:55%;font-size:22px}.transition-heart:nth-child(6){left:68%;font-size:13px}.transition-heart:nth-child(7){left:81%;font-size:19px}.transition-heart:nth-child(8){left:92%;font-size:12px}
+#transition.show .transition-heart:nth-child(1){animation:floatHeart 3.4s .05s ease-out forwards}
+#transition.show .transition-heart:nth-child(2){animation:floatHeart 3.1s .35s ease-out forwards}
+#transition.show .transition-heart:nth-child(3){animation:floatHeart 3.6s .15s ease-out forwards}
+#transition.show .transition-heart:nth-child(4){animation:floatHeart 3.2s .6s ease-out forwards}
+#transition.show .transition-heart:nth-child(5){animation:floatHeart 3.8s .25s ease-out forwards}
+#transition.show .transition-heart:nth-child(6){animation:floatHeart 3.3s .7s ease-out forwards}
+#transition.show .transition-heart:nth-child(7){animation:floatHeart 3.5s .45s ease-out forwards}
+#transition.show .transition-heart:nth-child(8){animation:floatHeart 3s .9s ease-out forwards}
+#reveal.show .transition-heart:nth-child(1){animation:floatHeart 4.1s .1s ease-out forwards}
+#reveal.show .transition-heart:nth-child(2){animation:floatHeart 3.7s .55s ease-out forwards}
+#reveal.show .transition-heart:nth-child(3){animation:floatHeart 4.3s .25s ease-out forwards}
+#reveal.show .transition-heart:nth-child(4){animation:floatHeart 3.8s .8s ease-out forwards}
+#reveal.show .transition-heart:nth-child(5){animation:floatHeart 4.5s .4s ease-out forwards}
+#reveal.show .transition-heart:nth-child(6){animation:floatHeart 4s .95s ease-out forwards}
+#reveal.show .transition-heart:nth-child(7){animation:floatHeart 4.2s .65s ease-out forwards}
+#reveal.show .transition-heart:nth-child(8){animation:floatHeart 3.9s 1.05s ease-out forwards}
+@keyframes floatHeart{0%{transform:translate3d(0,0,0) scale(.55) rotate(-8deg);opacity:0}12%{opacity:.8}55%{opacity:.55}100%{transform:translate3d(12px,-105vh,0) scale(1.15) rotate(14deg);opacity:0}}
+.web-line{position:absolute;width:260px;height:260px;border-radius:50%;border:1px solid rgba(244,240,232,.11);opacity:0;will-change:transform,opacity}
+.web-line.one{left:-155px;top:-115px}.web-line.two{right:-155px;bottom:-120px}
+#transition.show .web-line{animation:webReveal 1.25s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes webReveal{0%{opacity:0;transform:scale(.35) rotate(-10deg)}35%{opacity:.8}100%{opacity:.42;transform:scale(1.12) rotate(7deg)}}
+.web-line:before,.web-line:after{content:"";position:absolute;inset:15%;border-radius:50%;border:1px solid rgba(244,240,232,.08)}.web-line:after{inset:34%}
+.transition-heart-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;gap:8px;opacity:0;z-index:2;pointer-events:none}
+.transition-heart-center span{color:var(--red);font-size:31px;display:block;will-change:transform,opacity}
+#transition.show .transition-heart-center{opacity:1}
+#transition.show .transition-heart-center span{animation:centerHeart 1.35s cubic-bezier(.2,.75,.3,1) forwards}
+#transition.show .transition-heart-center span:nth-child(2){animation-delay:.1s}#transition.show .transition-heart-center span:nth-child(3){animation-delay:.2s}
+@keyframes centerHeart{0%{opacity:0;transform:translateY(30px) scale(.25)}20%{opacity:1}55%{opacity:1;transform:translateY(-8px) scale(1.18)}100%{opacity:0;transform:translateY(-72px) scale(1.45)}}
+.card{position:relative;width:min(92vw,410px);background:#33243F;border:1px solid var(--line);border-radius:18px;padding:25px 20px;text-align:center;box-shadow:0 20px 65px rgba(0,0,0,.55);z-index:3}
+.transition-card{opacity:0;transform:translate3d(0,22px,0) scale(.96);pointer-events:none}
+#transition.card-ready .transition-card{animation:cardIn .65s cubic-bezier(.2,.85,.2,1) forwards;pointer-events:auto}
+@keyframes cardIn{0%{opacity:0;transform:translate3d(0,22px,0) scale(.96)}100%{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+.card .kicker{font-size:8px;letter-spacing:.2em;color:var(--gold);font-weight:800}.transition-round{margin-top:7px;font-size:8px;letter-spacing:.18em;color:var(--muted)}
+.card h2{font:italic 30px/1.05 Georgia,"Times New Roman",serif;margin:12px 0 9px;color:var(--cream)}.card p{color:var(--muted);font-size:12px;line-height:1.5}.card button{margin-top:10px;border:1px solid rgba(244,240,232,.16);background:rgba(194,138,224,.16);color:var(--cream);border-radius:10px;padding:11px 18px;font-weight:800;cursor:pointer;min-height:43px}
+#reveal{overflow:auto;opacity:0}
+#reveal.show{animation:finalFade .55s ease forwards}
+@keyframes finalFade{from{opacity:0}to{opacity:1}}
+.reveal-card{max-width:440px;opacity:0;transform:translate3d(0,25px,0) scale(.96)}
+#reveal.show .reveal-card{animation:finalCardIn .75s .35s cubic-bezier(.2,.85,.2,1) forwards}
+@keyframes finalCardIn{from{opacity:0;transform:translate3d(0,25px,0) scale(.96)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+#reveal .transition-heart-center{top:47%}
+#reveal.show .transition-heart-center{opacity:1}
+#reveal.show .transition-heart-center span{animation:centerHeartFinal 1.5s cubic-bezier(.2,.75,.3,1) forwards}
+#reveal.show .transition-heart-center span:nth-child(2){animation-delay:.12s}#reveal.show .transition-heart-center span:nth-child(3){animation-delay:.24s}
+@keyframes centerHeartFinal{0%{opacity:0;transform:translateY(35px) scale(.2)}22%{opacity:1;transform:translateY(0) scale(1)}45%{opacity:1;transform:translateY(-8px) scale(1.28)}100%{opacity:0;transform:translateY(-95px) scale(1.55)}}
+.report{font-size:8px;letter-spacing:.2em;color:var(--gold);font-weight:800}.headline{font:italic 28px/1.08 Georgia,"Times New Roman",serif;margin:13px 0}.headline span{color:var(--red)}.note{color:var(--muted);font-size:12px;line-height:1.5}.proposal{margin-top:16px;border:1px solid rgba(216,184,240,.32);border-radius:13px;padding:14px}.proposal-label{font-size:8px;letter-spacing:.16em;color:var(--gold);font-weight:800}.proposal-title{font:italic 22px/1.05 Georgia,"Times New Roman",serif;margin:8px 0}.proposal-copy{color:var(--muted);font-size:11px;line-height:1.45}.proposal button{width:100%;margin-top:11px;background:var(--gold);color:#21182B;border:0;border-radius:9px;padding:11px;font-weight:800}.sign{color:#627A7A;font-size:10px;line-height:1.4;margin-top:14px}.accepted{display:none;color:var(--gold);font-size:11px;font-weight:800;line-height:1.45;margin-top:12px}.accepted.show{display:block}
+.shake{animation:shake .3s ease}@keyframes shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+.orchid-mode .web-line{border-color:rgba(216,184,240,.22)}
+.orchid-mode .web-line:before,.orchid-mode .web-line:after{border-color:rgba(120,143,120,.18)}
+@media(max-width:380px){body{padding:9px 7px calc(20px + env(safe-area-inset-bottom))}.eyebrow{margin-bottom:7px}.sub{font-size:11px;margin-top:10px}.key{min-height:39px;height:39px}.headline{font-size:25px}}
+@media(max-height:730px) and (max-width:500px){.sub{display:none}.toolbar{margin:7px 0 5px}.round{margin:5px 0}.tile{font-size:17px}.key{min-height:38px;height:38px}.footer{margin-top:7px}}
 </style>
 </head>
 <body>
-<main>
+<main id="app">
 <header>
-<p class="eyebrow">IIM ABC PERSONAL INTERVIEW</p>
-<h1><span class="title-line soft">FELLOW</span><span class="title-line accent">HATER<span class="heart">♥</span></span></h1>
-<p class="sub">You said my lines sound like every other IIM ABC guy. Fair criticism. Consider this your interview process.</p>
+<p class="eyebrow">A LITTLE SOMETHING FOR PRIYANSHI</p>
+<h1><span class="title-line soft">A LITTLE</span><span class="title-line accent">MYSTERY<span class="heart">✦</span></span></h1>
+<p class="sub">Three tiny rounds. A few clues. One question I have been meaning to ask you.</p>
 </header>
-<div class="toolbar"><button class="hint" id="hintBtn">Hint (1 left)</button></div>
-<div id="clueCard"><span class="clue-label">CLUE</span><span id="clueText"></span></div>
+
+<div id="clueCard" class="show"><span class="clue-label" id="clueLabel">CURRENT CLUE</span><span id="clueText">A tiny investigation into a few things that make you, well... you.</span></div>
 <div id="msg"></div>
-<div class="legend"><b>HOW TO PLAY</b><span class="sw correct">A</span><span>right spot</span><span class="sw present">A</span><span>wrong spot</span><span class="sw absent">A</span><span>not in word</span></div>
-<div class="round" id="roundLabel"></div>
-<div id="board" aria-label="Wordle board"></div>
-<div class="keyboard-label">TAP TO TYPE · NO GENERIC ANSWERS</div>
-<div id="keyboard" aria-label="On-screen keyboard">
-  <div class="krow">
-    <button class="key" type="button" data-key="Q">Q</button><button class="key" type="button" data-key="W">W</button><button class="key" type="button" data-key="E">E</button><button class="key" type="button" data-key="R">R</button><button class="key" type="button" data-key="T">T</button><button class="key" type="button" data-key="Y">Y</button><button class="key" type="button" data-key="U">U</button><button class="key" type="button" data-key="I">I</button><button class="key" type="button" data-key="O">O</button><button class="key" type="button" data-key="P">P</button>
-  </div>
-  <div class="krow middle">
-    <span class="spacer-key"></span><button class="key" type="button" data-key="A">A</button><button class="key" type="button" data-key="S">S</button><button class="key" type="button" data-key="D">D</button><button class="key" type="button" data-key="F">F</button><button class="key" type="button" data-key="G">G</button><button class="key" type="button" data-key="H">H</button><button class="key" type="button" data-key="J">J</button><button class="key" type="button" data-key="K">K</button><button class="key" type="button" data-key="L">L</button><span class="spacer-key"></span>
-  </div>
-  <div class="krow bottom">
-    <button class="key wide" type="button" data-key="ENTER">ENTER</button><button class="key" type="button" data-key="Z">Z</button><button class="key" type="button" data-key="X">X</button><button class="key" type="button" data-key="C">C</button><button class="key" type="button" data-key="V">V</button><button class="key" type="button" data-key="B">B</button><button class="key" type="button" data-key="N">N</button><button class="key" type="button" data-key="M">M</button><button class="key wide back" type="button" data-key="BACK">⌫</button>
-  </div>
+<div class="legend" aria-label="How to play">
+  <b>HOW TO PLAY</b>
+  <span class="sw correct">A</span><span>right spot</span>
+  <span class="sw present">A</span><span>wrong spot</span>
+  <span class="sw absent">A</span><span>not in word</span>
 </div>
-<div class="footer">made for one very specific hater ✦</div>
+<div class="round" id="roundLabel">ROUND 01</div>
+<div id="board" aria-label="Wordle board"></div>
+<div class="keyboard-label">TAP TO TYPE · TRUST YOUR INSTINCTS</div>
+<div id="keyboard" aria-label="On-screen keyboard">
+<div class="krow">
+<button class="key" data-key="Q">Q</button><button class="key" data-key="W">W</button><button class="key" data-key="E">E</button><button class="key" data-key="R">R</button><button class="key" data-key="T">T</button><button class="key" data-key="Y">Y</button><button class="key" data-key="U">U</button><button class="key" data-key="I">I</button><button class="key" data-key="O">O</button><button class="key" data-key="P">P</button>
+</div>
+<div class="krow middle">
+<span class="spacer-key"></span><button class="key" data-key="A">A</button><button class="key" data-key="S">S</button><button class="key" data-key="D">D</button><button class="key" data-key="F">F</button><button class="key" data-key="G">G</button><button class="key" data-key="H">H</button><button class="key" data-key="J">J</button><button class="key" data-key="K">K</button><button class="key" data-key="L">L</button><span class="spacer-key"></span>
+</div>
+<div class="krow">
+<button class="key wide" data-key="ENTER">ENTER</button><button class="key" data-key="Z">Z</button><button class="key" data-key="X">X</button><button class="key" data-key="C">C</button><button class="key" data-key="V">V</button><button class="key" data-key="B">B</button><button class="key" data-key="N">N</button><button class="key" data-key="M">M</button><button class="key wide back" data-key="BACK">⌫</button>
+</div>
+</div>
+<div class="footer">made for Priyanshi, with a little courage ✦</div>
 </main>
 
-<div id="transition"><div class="transition-hearts" aria-hidden="true"><span class="transition-heart">♥</span><span class="transition-heart">♥</span><span class="transition-heart">♥</span><span class="transition-heart">♥</span><span class="transition-heart">♥</span><span class="transition-heart">♥</span><span class="transition-heart">♥</span><span class="transition-heart">♥</span><span class="transition-heart">♥</span><span class="transition-heart">♥</span><span class="transition-heart">♥</span><span class="transition-heart">♥</span></div><div class="transition-heart-center" aria-hidden="true"><span>♥</span><span>♥</span><span>♥</span></div><div class="card transition-card"><div class="kicker">CASE CLEARED ♥</div><div class="transition-round" id="transitionRound">ROUND COMPLETE</div><div class="heart-burst">♥ ♥ ♥</div><h2 id="transitionTitle">Interesting.</h2><p id="transitionText"></p><button id="continueBtn">Continue to next round</button></div></div>
-<div id="reveal"><div class="card reveal-card">
-<div class="report">PERSONAL INTERVIEW // S</div>
-<div class="headline"><span>APPLICATION STATUS: SHORTLISTED.</span><br>Against all reasonable expectations.</div>
-<div class="note">You have demonstrated exceptional sarcasm, strong fellow-hater credentials, and an alarming ability to turn gossip into a full case discussion.<br><br>You also made it very clear that my lines have strong <em>every-IIM-ABC-guy</em> energy. Painful feedback. Fair feedback.<br><br><strong>Interviewer's note:</strong> candidate appears extremely difficult to impress. Fortunately, the interviewer is still interested.</div>
-<div class="proposal"><div class="proposal-label">FINAL ROUND</div><div class="proposal-title">One conversation.<br>Outside the classroom.</div><div class="proposal-copy">Two professional haters, something good to eat, and enough time to discuss completely unnecessary gossip without turning it into a consulting framework.</div><button onclick="this.textContent='Application accepted. Interview scheduled. ♡'">Proceed to the final round? ♡</button></div>
-<div class="sign">No generic IIM ABC lines were used in the making of this application.<br>Probably. ♡</div>
-</div></div>
-<script>
-(function(){
-'use strict';
-const STAGES=[
-{word:'HATER',transition:'Cultural fit confirmed. You are officially through to the gossip round.',clues:['Non-negotiable quality for the role.','Must be capable of disliking things purely on principle.','Sarcasm is strongly preferred.','You are definitely not looking for a yes-person.','Five letters. Starts with H.','The position you are currently recruiting for. 😂']},
-{word:'GOSSIP',transition:'Core competency confirmed. The interview is now getting unnecessarily interesting.',clues:['Information that somehow becomes a two-hour conversation.','The raw material for your favourite kind of analysis.',"Usually begins with: 'okay, but why did she actually do that?'",'Apparently requires more analysis than most case interviews.','Six letters. Starts with G.','You do not merely hear it. You dissect it. 😂']}
-];
-const MIN_TRIES=6;
-let stage=0,row=0,guess='',over=false,hintUsed=false;
-const board=document.getElementById('board'),keyboard=document.getElementById('keyboard'),round=document.getElementById('roundLabel'),msg=document.getElementById('msg'),clue=document.getElementById('clueCard'),clueText=document.getElementById('clueText'),hint=document.getElementById('hintBtn');
-const states={};
-function answer(){return STAGES[stage].word}
-function renderBoard(){if(!board)return;board.innerHTML='';board.style.setProperty('--cols',answer().length);for(let r=0;r<MIN_TRIES;r++){const rowEl=document.createElement('div');rowEl.className='row';rowEl.style.setProperty('--cols',answer().length);for(let c=0;c<answer().length;c++){const t=document.createElement('div');t.className='tile';t.id=`tile-${r}-${c}`;rowEl.appendChild(t)}board.appendChild(rowEl)}}
-function renderKeyboard(){
-  keyboard.querySelectorAll('.key').forEach(b=>{
-    b.classList.remove('correct','present','absent');
-    b.onpointerdown=function(e){e.preventDefault();handleKey(this.dataset.key)};
-    b.onclick=function(e){e.preventDefault();};
-  });
-}
+<div id="transition">
+<div class="web-line one"></div><div class="web-line two"></div>
+<div class="transition-hearts"><span class="transition-heart">✿</span><span class="transition-heart">✿</span><span class="transition-heart">✿</span><span class="transition-heart">✿</span><span class="transition-heart">✿</span><span class="transition-heart">✿</span><span class="transition-heart">✿</span></div>
+<div class="transition-heart-center"><span>✿</span><span>✿</span><span>✿</span></div>
+<div class="card transition-card">
+<div class="kicker">ROUND CLEARED ♥</div>
+<div class="transition-round" id="transitionRound">ROUND 01 CLEARED</div>
+<h2 id="transitionTitle">Okay, this is promising.</h2>
+<p id="transitionText"></p>
+<button id="continueBtn">Continue →</button>
+</div>
+</div>
 
-function start(i){stage=i;row=0;guess='';over=false;hintUsed=false;Object.keys(states).forEach(k=>delete states[k]);round.textContent=`ROUND 0${i+1} · ${i===0?'CULTURAL FIT':'CORE COMPETENCY'}`;msg.textContent='';clue.classList.remove('show');clueText.textContent='';hint.textContent='Hint (1 left)';hint.disabled=false;renderBoard();renderKeyboard();window.scrollTo({top:0,behavior:'smooth'})}
-function handleKey(k){if(over)return;if(k==='ENTER')return submit();if(k==='BACK'){if(!guess)return;const t=document.getElementById(`tile-${row}-${guess.length-1}`);if(t){t.textContent='';t.classList.remove('filled')}guess=guess.slice(0,-1);return}if(/^[A-Z]$/.test(k)&&guess.length<answer().length){guess+=k;const t=document.getElementById(`tile-${row}-${guess.length-1}`);t.textContent=k;t.classList.add('filled')}}
-function result(g){const a=answer().split(''),out=Array(g.length).fill('absent'),used=Array(a.length).fill(false);for(let i=0;i<g.length;i++)if(g[i]===a[i]){out[i]='correct';used[i]=true}for(let i=0;i<g.length;i++)if(out[i]!=='correct'){const j=a.findIndex((x,n)=>x===g[i]&&!used[n]);if(j>=0){out[i]='present';used[j]=true}}return out}
-function submit(){if(guess.length<answer().length){msg.textContent='Not enough letters';const r=document.getElementById(`row-${row}`);r.classList.add('shake');setTimeout(()=>r.classList.remove('shake'),350);return}const g=guess.split(''),res=result(g),won=guess===answer();g.forEach((ch,i)=>{const t=document.getElementById(`tile-${row}-${i}`);setTimeout(()=>{t.classList.add(res[i]);const key=[...keyboard.querySelectorAll('.key')].find(x=>x.dataset.key===ch);if(key){key.classList.remove('correct','present','absent');key.classList.add(res[i])}},i*70)});setTimeout(()=>{if(won){over=true;if(stage<STAGES.length-1){const transition=document.getElementById('transition');document.getElementById('transitionRound').textContent=`ROUND 0${stage+1} CLEARED · ${answer()}`;document.getElementById('transitionTitle').textContent=stage===0?'Okay, this is promising.':'This is getting suspicious.';document.getElementById('transitionText').textContent=STAGES[stage].transition;const btn=document.getElementById('continueBtn');btn.disabled=true;transition.classList.remove('show','card-ready','heart-phase');void transition.offsetWidth;transition.classList.add('show','heart-phase');setTimeout(()=>{transition.classList.add('card-ready');btn.disabled=false},1450)}else{const transition=document.getElementById('transition');document.getElementById('transitionRound').textContent='FINAL ROUND UNLOCKED · GOSSIP';document.getElementById('transitionTitle').textContent='Okay. I’m listening.';document.getElementById('transitionText').textContent='Core competency confirmed. You have officially made it through the interview. There is, however, one final thing to discuss.';const btn=document.getElementById('continueBtn');btn.textContent='See your interview result';btn.disabled=true;transition.classList.remove('show','card-ready','heart-phase');void transition.offsetWidth;transition.classList.add('show','heart-phase');setTimeout(()=>{transition.classList.add('card-ready');btn.disabled=false},1450);btn.onclick=()=>{transition.classList.remove('show','card-ready','heart-phase');setTimeout(()=>document.getElementById('reveal').classList.add('show'),350)}}}else{const s=STAGES[stage];msg.textContent=['Strong opinion. Wrong answer.','That had strong IIM ABC placement energy.','Please avoid the consulting-deck approach.','Good attempt. Generic, but good.'][Math.min(row,3)];clueText.textContent=s.clues[Math.min(row,s.clues.length-1)];clue.classList.add('show');row++;guess='';if(row>=MIN_TRIES){row=MIN_TRIES-1;msg.textContent='HR is getting impatient. Try again. 😂'}}},answer().length*70+250)}
-function useHint(){if(hintUsed||over)return;hintUsed=true;hint.disabled=true;hint.textContent='Hint used';const a=answer(),i=Math.floor(Math.random()*a.length);msg.textContent=`Interviewer note: letter ${i+1} is ${a[i]}`}
-document.addEventListener('keydown',e=>{const k=e.key.toUpperCase();if(k==='ENTER'||k==='BACKSPACE')handleKey(k==='ENTER'?'ENTER':'BACK');else if(/^[A-Z]$/.test(k))handleKey(k)});
-hint.type='button';hint.onclick=useHint;document.getElementById('continueBtn').onclick=()=>{const t=document.getElementById('transition');t.classList.remove('show','card-ready','heart-phase');start(stage+1)};start(0);
+<div id="reveal">
+<div class="web-line one"></div><div class="web-line two"></div>
+<div class="transition-hearts"><span class="transition-heart">✿</span><span class="transition-heart">✿</span><span class="transition-heart">✿</span><span class="transition-heart">✿</span><span class="transition-heart">✿</span><span class="transition-heart">✿</span><span class="transition-heart">✿</span><span class="transition-heart">✿</span></div>
+<div class="transition-heart-center"><span>✿</span><span>✿</span><span>✿</span></div>
+<div class="card reveal-card">
+<div class="report">FINAL RESULT</div>
+<div class="headline"><span>WELL, THIS GOT INTERESTING. ✦</span></div>
+<div class="note">
+After careful investigation, one thing is becoming very clear: you are rather lovely company.
+<br><br><strong>Priyanshi, can I ask you something?</strong>
+</div>
+<div class="proposal">
+<div class="proposal-label">THE ACTUAL QUESTION</div>
+<div class="proposal-title">Good company.<br>A little adventure.<br>Just you and me.</div>
+<div class="proposal-copy">I have a plan in mind. You just have to say the word. ✦</div>
+<button id="acceptBtn">Priyanshi, would you let me take you out? ♡</button>
+<div class="accepted" id="accepted">Wait, is that a yes? ♡<br><br>Excellent. You know the plan. You just show up being you. 😊</div>
+</div>
+<div class="sign">No pressure. Just thought you should know. ♡</div>
+</div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  const rounds = [
+    {
+      word: "ORCHID",
+      label: "ROUND 01 · A LITTLE DETAIL",
+      clues: [
+        "Some things are beautiful without needing to show off.",
+        "This one can look delicate, but it is surprisingly distinctive.",
+        "You might spot it in a bouquet and immediately know it is not an ordinary flower.",
+        "Six letters.",
+        "Starts with O.",
+        "A flower you happen to have a soft spot for."
+      ],
+      transitionTitle: "Good eye. That was round one.",
+      transitionText: "Distinctive, a little unexpected, and quietly impressive.<br>Let’s see how you do with the next one.",
+      button: "Next round →"
+    },
+    {
+      word: "COOL",
+      label: "ROUND 02 · THE ENERGY",
+      clues: [
+        "Some people follow the vibe. Others set it.",
+        "Confident without making a big deal of it.",
+        "The opposite of trying too hard.",
+        "Four letters.",
+        "Starts with C.",
+        "The word for someone effortlessly in their element."
+      ],
+      transitionTitle: "You make this look easy.",
+      transitionText: "Two rounds down. One left, and I may be a little biased about this one.",
+      button: "One last round →"
+    },
+    {
+      word: "SMILE",
+      label: "ROUND 03 · NO COMMENT",
+      clues: [
+        "Sometimes you notice something before you mean to.",
+        "It can make an ordinary moment feel a little better.",
+        "Hard to fake, even harder not to notice when it is genuine.",
+        "Five letters.",
+        "Starts with S.",
+        "Let’s just say yours might have inspired this round."
+      ]
+    }
+  ];
+
+  const MAX_ROWS = 6;
+  let round = 0;
+  let currentRow = 0;
+  let guess = "";
+  let locked = false;
+  let hintUsed = false;
+
+  const board = document.getElementById("board");
+  const keyboard = document.getElementById("keyboard");
+  const roundLabel = document.getElementById("roundLabel");
+  const clueText = document.getElementById("clueText");
+  const clueLabel = document.getElementById("clueLabel");
+  const msg = document.getElementById("msg");
+  const clueCard = document.getElementById("clueCard");
+  const transition = document.getElementById("transition");
+  const reveal = document.getElementById("reveal");
+  const transitionRound = document.getElementById("transitionRound");
+  const transitionTitle = document.getElementById("transitionTitle");
+  const transitionText = document.getElementById("transitionText");
+  const continueBtn = document.getElementById("continueBtn");
+  const acceptBtn = document.getElementById("acceptBtn");
+  const accepted = document.getElementById("accepted");
+
+  function makeBoard() {
+    const wordLength = rounds[round].word.length;
+    board.innerHTML = "";
+    board.style.setProperty("--cols", wordLength);
+
+    for (let r = 0; r < MAX_ROWS; r++) {
+      const row = document.createElement("div");
+      row.className = "row";
+      row.style.gridTemplateColumns = "repeat(" + wordLength + ", minmax(0, 1fr))";
+
+      for (let c = 0; c < wordLength; c++) {
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.id = "tile-" + r + "-" + c;
+        row.appendChild(tile);
+      }
+
+      board.appendChild(row);
+    }
+  }
+
+  function resetKeyboard() {
+    keyboard.querySelectorAll(".key").forEach(function (key) {
+      key.classList.remove("correct", "present", "absent");
+    });
+  }
+
+  function startRound(index) {
+    round = index;
+    currentRow = 0;
+    guess = "";
+    locked = false;
+    roundLabel.textContent = rounds[round].label;
+    clueLabel.textContent = "CURRENT CLUE";
+    clueText.textContent = rounds[round].clues[0];
+    clueCard.classList.add("show");
+    msg.textContent = "";
+    makeBoard();
+    resetKeyboard();
+
+    document.body.classList.toggle("nap-mode", false);
+    document.body.classList.toggle("food-mode", true);
+  }
+
+  function typeLetter(letter) {
+    if (locked) return;
+    if (guess.length >= rounds[round].word.length) return;
+
+    guess += letter;
+    const tile = document.getElementById(
+      "tile-" + currentRow + "-" + (guess.length - 1)
+    );
+
+    if (tile) {
+      tile.textContent = letter;
+      tile.classList.add("filled");
+    }
+  }
+
+  function backspace() {
+    if (locked || guess.length === 0) return;
+
+    const tile = document.getElementById(
+      "tile-" + currentRow + "-" + (guess.length - 1)
+    );
+
+    if (tile) {
+      tile.textContent = "";
+      tile.classList.remove("filled");
+    }
+
+    guess = guess.slice(0, -1);
+  }
+
+  function evaluate(word, target) {
+    const result = new Array(target.length).fill("absent");
+    const used = new Array(target.length).fill(false);
+
+    for (let i = 0; i < target.length; i++) {
+      if (word[i] === target[i]) {
+        result[i] = "correct";
+        used[i] = true;
+      }
+    }
+
+    for (let i = 0; i < target.length; i++) {
+      if (result[i] === "correct") continue;
+
+      for (let j = 0; j < target.length; j++) {
+        if (!used[j] && word[i] === target[j]) {
+          result[i] = "present";
+          used[j] = true;
+          break;
+        }
+      }
+    }
+
+    return result;
+  }
+
+  function updateKeyboard(letter, state) {
+    const key = keyboard.querySelector('[data-key="' + letter + '"]');
+    if (!key) return;
+
+    if (
+      state === "correct" ||
+      (state === "present" && !key.classList.contains("correct")) ||
+      (state === "absent" &&
+        !key.classList.contains("correct") &&
+        !key.classList.contains("present"))
+    ) {
+      key.classList.remove("correct", "present", "absent");
+      key.classList.add(state);
+    }
+  }
+
+  function submit() {
+    if (locked) return;
+
+    const target = rounds[round].word;
+
+    if (guess.length !== target.length) {
+      msg.textContent = "Need " + target.length + " letters.";
+      return;
+    }
+
+    locked = true;
+
+    const result = evaluate(guess, target);
+    const submitted = guess;
+
+    for (let i = 0; i < target.length; i++) {
+      const tile = document.getElementById(
+        "tile-" + currentRow + "-" + i
+      );
+
+      if (!tile) continue;
+
+      // Wordle-style reveal: tiles flip one-by-one, then lock into their
+      // final color at the midpoint of the flip. Remove any previous state
+      // first so a tile can never carry two result colors at once.
+      setTimeout(function () {
+        tile.classList.remove("correct", "present", "absent");
+        tile.classList.add("flip");
+
+        setTimeout(function () {
+          tile.classList.remove("correct", "present", "absent");
+          tile.classList.add(result[i]);
+          updateKeyboard(submitted[i], result[i]);
+        }, 275);
+      }, i * 120);
+    }
+
+    setTimeout(function () {
+      if (submitted === target) {
+        if (round < rounds.length - 1) {
+          showTransition();
+        } else {
+          showFinal();
+        }
+        return;
+      }
+
+      if (currentRow === MAX_ROWS - 1) {
+        msg.textContent = "Okay, I'm going to pretend that was intentional. 😂";
+        locked = false;
+        return;
+      }
+
+      const clueIndex = Math.min(
+        currentRow + 1,
+        rounds[round].clues.length - 1
+      );
+
+      msg.textContent = [
+        "Interesting choice.",
+        "Bold. Not correct though.",
+        "That had potential.",
+        "Okay, I respect the confidence.",
+        "Please reconsider your life choices. 😂"
+      ][Math.min(currentRow, 4)];
+
+      currentRow++;
+      guess = "";
+
+      // Each wrong guess naturally unlocks the next clue.
+      clueLabel.textContent = "CLUE " + Math.min(currentRow + 1, rounds[round].clues.length);
+      clueText.textContent = rounds[round].clues[clueIndex];
+      clueCard.classList.add("show");
+
+      locked = false;
+    }, target.length * 90 + 500);
+  }
+
+  function showTransition() {
+    const r = rounds[round];
+
+    transitionRound.textContent =
+      r.label + " CLEARED";
+    transitionTitle.textContent = r.transitionTitle;
+    transitionText.innerHTML = r.transitionText;
+    continueBtn.textContent = r.button;
+
+    transition.classList.remove("show", "heart-phase", "card-ready");
+    void transition.offsetWidth;
+
+    transition.classList.add("show");
+
+    setTimeout(function () {
+      transition.classList.add("heart-phase");
+    }, 350);
+
+    setTimeout(function () {
+      transition.classList.add("card-ready");
+    }, 1500);
+  }
+
+  function showFinal() {
+    reveal.classList.remove("show");
+    void reveal.offsetWidth;
+    reveal.classList.add("show");
+  }
+
+  keyboard.addEventListener("pointerdown", function (event) {
+    const key = event.target.closest(".key");
+    if (!key) return;
+
+    event.preventDefault();
+
+    const value = key.dataset.key;
+
+    if (value === "ENTER") {
+      submit();
+    } else if (value === "BACK") {
+      backspace();
+    } else {
+      typeLetter(value);
+    }
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (transition.classList.contains("show") ||
+        reveal.classList.contains("show")) return;
+
+    if (event.key === "Enter") {
+      submit();
+    } else if (event.key === "Backspace") {
+      backspace();
+    } else if (/^[a-zA-Z]$/.test(event.key)) {
+      typeLetter(event.key.toUpperCase());
+    }
+  });
+
+  continueBtn.addEventListener("click", function () {
+    transition.classList.remove("show", "heart-phase", "card-ready");
+    startRound(round + 1);
+  });
+
+  acceptBtn.addEventListener("click", function () {
+    acceptBtn.style.display = "none";
+    accepted.classList.add("show");
+  });
+
+  startRound(0);
 })();
 </script>
 </body>
